@@ -13,6 +13,10 @@
 
 `cargo add bitbank-api`
 
+## Reference
+
+https://github.com/bitbankinc/bitbank-api-docs
+
 ## Disclaimer
 
 This is not an official library from bitbank.
