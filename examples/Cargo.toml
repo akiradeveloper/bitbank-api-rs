@@ -1,0 +1,21 @@
+[package]
+name = "examples"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+futures-util = "0.3"
+anyhow = "1"
+bitbank-api = { path = "../bitbank-api" }
+
+[[example]]
+name = "public-api"
+path = "public_api.rs"
+
+[[example]]
+name = "stream-api"
+path = "stream_api.rs"
