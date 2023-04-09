@@ -1,6 +1,6 @@
 # bitbank-api-rs
 
-Rust library for [bitbank API](https://github.com/bitbankinc/bitbank-api-docs).
+[API Documentation](https://docs.rs/bitbank-api/0.1.0/bitbank_api/)
 
 ## Features
 
