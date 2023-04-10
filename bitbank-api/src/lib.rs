@@ -3,49 +3,61 @@ use serde::Deserialize;
 use serde_with::chrono::NaiveDateTime;
 use serde_with::TimestampMilliSeconds;
 
+pub mod private;
+pub mod public;
 pub mod stream;
 
 use serde_with::{serde_as, DisplayFromStr};
 
-pub mod ticker;
-
-#[derive(Display)]
+#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub enum Pair {
-    btc_jpy,
     xrp_jpy,
 }
 
-#[serde_as]
-#[derive(Debug, Deserialize)]
-pub struct Ticker {
-    #[serde_as(as = "DisplayFromStr")]
-    pub sell: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub buy: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub high: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub low: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub open: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub last: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub vol: f64,
-    #[serde_as(as = "TimestampMilliSeconds")]
-    pub timestamp: NaiveDateTime,
+#[derive(Display)]
+pub enum Asset {
+    jpy,
+    xrp,
+}
+
+#[derive(Display, Debug, Clone)]
+pub enum SortOrder {
+    desc,
+    asc,
+}
+
+#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub enum Side {
+    buy,
+    sell,
+}
+
+#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub enum OrderType {
+    limit,
+    market,
+    stop,
+    stop_limit,
+}
+
+#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub enum MakerTaker {
+    maker,
+    taker,
+}
+
+#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub enum OrderStatus {
+    INACTIVE,
+    UNFILLED,
+    PARTIALLY_FILLED,
+    FULLY_FILLED,
+    CANCELED_UNFILLED,
+    CANCELED_PARTIALLY_FILLED,
 }
 
 #[derive(Debug, serde::Deserialize)]
 struct Response {
     success: u16,
     data: serde_json::Value,
-}
-
-async fn do_get<R: serde::de::DeserializeOwned>(url: String) -> anyhow::Result<R> {
-    let cli = reqwest::Client::new();
-    let resp: Response = cli.get(url).send().await?.json().await?;
-    anyhow::ensure!(resp.success == 1);
-    let data: R = serde_json::from_value(resp.data)?;
-    Ok(data)
 }

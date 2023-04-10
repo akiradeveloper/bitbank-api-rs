@@ -19,3 +19,7 @@ path = "public_api.rs"
 [[example]]
 name = "stream-api"
 path = "stream_api.rs"
+
+[[example]]
+name = "trade"
+path = "trade.rs"
