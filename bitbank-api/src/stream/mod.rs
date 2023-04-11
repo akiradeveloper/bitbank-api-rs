@@ -13,9 +13,6 @@ fn parse_message<R: serde::de::DeserializeOwned>(msg: Message) -> Option<ParsedM
     use std::str::FromStr;
 
     let txt = msg.into_text().ok()?;
-    if txt.len() < 2 {
-        return None;
-    }
 
     // Find the boundary between number and JSON
     let boundary = txt
