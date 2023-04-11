@@ -1,5 +1,5 @@
 use super::*;
-use reqwest::Client;
+use reqwest::{Client, ClientBuilder};
 
 use derive_builder::Builder;
 use query_params::QueryParams;
@@ -31,7 +31,6 @@ impl ApiExec {
         .create(self.cred)?;
         let url = format!("https://api.bitbank.cc{path}{params}");
         let (cli, req) = Client::new().get(url).headers(auth_headers).build_split();
-        dbg!(&req);
         let resp: Response = cli.execute(req?).await?.json().await?;
         anyhow::ensure!(resp.success == 1);
         let data: R = serde_json::from_value(resp.data)?;
@@ -50,9 +49,8 @@ impl ApiExec {
         let (cli, req) = Client::new()
             .post(url)
             .headers(auth_headers)
-            .json(&body)
+            .body(body)
             .build_split();
-        dbg!(&req);
         let resp: Response = cli.execute(req?).await?.json().await?;
         anyhow::ensure!(resp.success == 1);
         let data: R = serde_json::from_value(resp.data)?;

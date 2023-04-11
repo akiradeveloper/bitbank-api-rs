@@ -23,3 +23,7 @@ path = "stream_api.rs"
 [[example]]
 name = "trade"
 path = "trade.rs"
+
+[[example]]
+name = "account-status"
+path = "account_status.rs"
