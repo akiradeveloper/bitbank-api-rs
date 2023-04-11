@@ -35,6 +35,7 @@ pub struct CreateOrder {
     pub remaining_amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub executed_amount: f64,
+    #[serde_as(as = "DisplayFromStr")]
     pub price: f64,
     pub post_only: bool,
     #[serde_as(as = "DisplayFromStr")]
@@ -42,9 +43,9 @@ pub struct CreateOrder {
     #[serde_as(as = "TimestampMilliSeconds")]
     pub ordered_at: NaiveDateTime,
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
-    pub expired_at: Option<NaiveDateTime>,
-    #[serde_as(as = "DisplayFromStr")]
-    pub trigger_price: f64,
+    pub expire_at: Option<NaiveDateTime>,
+    #[serde_as(as = "Option<DisplayFromStr>")]
+    pub trigger_price: Option<f64>,
     pub status: OrderStatus,
 }
 

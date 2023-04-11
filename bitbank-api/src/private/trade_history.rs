@@ -29,7 +29,6 @@ pub struct Trade {
 
 #[derive(Builder, QueryParams, Debug)]
 #[builder(setter(strip_option, into))]
-#[serde_as]
 pub struct Params {
     pair: Pair,
     #[builder(default)]

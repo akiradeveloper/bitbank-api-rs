@@ -4,7 +4,14 @@ const ACCESS_KEY: &'static str = "ACCESS-KEY";
 const ACCESS_NONCE: &'static str = "ACCESS-NONCE";
 const ACCESS_SIGNATURE: &'static str = "ACCESS-SIGNATURE";
 
-#[derive(Clone)]
+fn generate_nonce() -> u64 {
+    use std::time::SystemTime;
+    let now = SystemTime::now();
+    let du = now.duration_since(SystemTime::UNIX_EPOCH).unwrap();
+    du.as_secs()
+}
+
+#[derive(Debug, Clone)]
 pub struct Credential {
     pub api_key: String,
     pub api_secret: String,
@@ -43,7 +50,7 @@ pub struct GetAuth {
 impl GetAuth {
     pub fn create(self, cred: Credential) -> anyhow::Result<HeaderMap> {
         let mut out = HeaderMap::new();
-        let nonce = 0; // tmp
+        let nonce = generate_nonce();
         let sig = {
             let message = format!("{nonce}{}{}", self.path, self.params);
             cred.signature(&message)
@@ -61,7 +68,7 @@ pub struct PostAuth {
 impl PostAuth {
     pub fn create(self, cred: Credential) -> anyhow::Result<HeaderMap> {
         let mut out = HeaderMap::new();
-        let nonce = 0; // tmp
+        let nonce = generate_nonce();
         let sig = {
             let message = format!("{nonce}{}", self.body);
             cred.signature(&message)

@@ -1,19 +1,20 @@
 use bitbank_api::*;
+use std::time::Duration;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let ticker = public::ticker::get(Pair::xrp_jpy).await?;
-
     // For not actually complete a buy,
-    // we will make a buy order in non-realistic low price.
+    // we will make a buy order in non-realistically low price.
+    let ticker = public::ticker::get(Pair::xrp_jpy).await?;
     let tgt_price = ticker.low * 0.1;
 
     let cred = private::Credential::from_env()?;
+    dbg!(&cred);
 
     let created = {
         let params = private::create_order::ParamsBuilder::default()
-            .side(Side::buy)
             .pair(Pair::xrp_jpy)
+            .side(Side::buy)
             .price(tgt_price)
             .amount(1)
             .order_type(OrderType::limit)
@@ -22,6 +23,7 @@ async fn main() -> anyhow::Result<()> {
     };
     dbg!(&created);
 
+    tokio::time::sleep(Duration::from_secs(1)).await;
     let fetched = {
         let params = private::fetch_order::ParamsBuilder::default()
             .pair(Pair::xrp_jpy)
@@ -31,6 +33,7 @@ async fn main() -> anyhow::Result<()> {
     };
     dbg!(&fetched);
 
+    tokio::time::sleep(Duration::from_secs(1)).await;
     let canceled = {
         let params = private::cancel_order::ParamsBuilder::default()
             .pair(Pair::xrp_jpy)

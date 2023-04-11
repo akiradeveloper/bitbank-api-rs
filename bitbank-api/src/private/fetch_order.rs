@@ -7,8 +7,8 @@ pub struct Params {
     order_id: u64,
 }
 
-#[derive(serde::Deserialize, Debug)]
 #[serde_as]
+#[derive(serde::Deserialize, Debug)]
 pub struct OrderInfo {
     pub order_id: u64,
     pub pair: Pair,
@@ -21,17 +21,19 @@ pub struct OrderInfo {
     pub remaining_amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub executed_amount: f64,
+    #[serde_as(as = "DisplayFromStr")]
     pub price: f64,
     pub post_only: bool,
     #[serde_as(as = "DisplayFromStr")]
     pub average_price: f64,
+    #[serde_as(as = "TimestampMilliSeconds")]
     pub ordered_at: NaiveDateTime,
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
-    pub expired_at: Option<NaiveDateTime>,
+    pub expire_at: Option<NaiveDateTime>,
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
     pub triggered_at: Option<NaiveDateTime>,
-    #[serde_as(as = "DisplayFromStr")]
-    pub trigger_price: f64,
+    #[serde_as(as = "Option<DisplayFromStr>")]
+    pub trigger_price: Option<f64>,
     pub status: OrderStatus,
 }
 
