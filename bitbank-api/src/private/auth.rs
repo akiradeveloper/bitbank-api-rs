@@ -8,7 +8,7 @@ fn generate_nonce() -> u64 {
     use std::time::SystemTime;
     let now = SystemTime::now();
     let du = now.duration_since(SystemTime::UNIX_EPOCH).unwrap();
-    du.as_secs()
+    du.as_micros() as u64
 }
 
 #[derive(Debug, Clone)]
