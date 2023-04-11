@@ -14,9 +14,13 @@ keywords = ["bitbank", "crypto", "trading"]
 
 [dependencies]
 anyhow = "1"
+derive_builder = "0.12.0"
 derive_more = "0.99"
 futures-util = { version = "0.3", default-features = false }
+hex = "0.4.3"
+query_params = "0.1.0"
 reqwest = { version = "0.11", features = ["json"] }
+rust-crypto = "0.2.36"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 serde_with = { version = "2", features = ["chrono"] }

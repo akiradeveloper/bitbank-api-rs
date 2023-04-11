@@ -1,5 +1,7 @@
 use super::*;
 
+pub use crate::public::ticker::Ticker;
+
 pub async fn connect(pair: Pair) -> anyhow::Result<impl tokio_stream::Stream<Item = Ticker>> {
     let room_id = format!("ticker_{pair}");
     do_connect(&room_id).await
