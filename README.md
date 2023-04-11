@@ -2,7 +2,7 @@
 
 [![Crates.io](https://img.shields.io/crates/v/bitbank-api.svg)](https://crates.io/crates/bitbank-api)
 
-[API Documentation](https://docs.rs/bitbank-api/0.1.0/bitbank_api/)
+[API Documentation](https://docs.rs/bitbank-api/latest/bitbank_api/index.html)
 
 ## Disclaimer
 
