@@ -16,7 +16,7 @@ async fn main() -> anyhow::Result<()> {
             .pair(Pair::xrp_jpy)
             .price(tgt_price)
             .amount(1)
-            .order_type(OrderType::market)
+            .order_type(OrderType::limit)
             .build()?;
         private::create_order::post(cred.clone(), params).await?
     };
