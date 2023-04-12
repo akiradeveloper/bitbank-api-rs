@@ -32,8 +32,8 @@ impl ApiExec {
         let url = format!("https://api.bitbank.cc{path}{params}");
         let (cli, req) = Client::new().get(url).headers(auth_headers).build_split();
         let resp: Response = cli.execute(req?).await?.json().await?;
-        anyhow::ensure!(resp.success == 1);
-        let data: R = serde_json::from_value(resp.data)?;
+        let data = resp.result()?;
+        let data: R = serde_json::from_value(data)?;
         Ok(data)
     }
     /// path: /v1/x/y/z
@@ -52,8 +52,8 @@ impl ApiExec {
             .body(body)
             .build_split();
         let resp: Response = cli.execute(req?).await?.json().await?;
-        anyhow::ensure!(resp.success == 1);
-        let data: R = serde_json::from_value(resp.data)?;
+        let data = resp.result()?;
+        let data: R = serde_json::from_value(data)?;
         Ok(data)
     }
 }

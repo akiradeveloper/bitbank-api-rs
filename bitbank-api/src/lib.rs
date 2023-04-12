@@ -61,3 +61,25 @@ struct Response {
     success: u16,
     data: serde_json::Value,
 }
+
+impl Response {
+    fn result(self) -> anyhow::Result<serde_json::Value> {
+        if self.success == 1 {
+            Ok(self.data)
+        } else {
+            let e: ResponseError = serde_json::from_value(self.data)?;
+            Err(ApiError { code: e.code }.into())
+        }
+    }
+}
+
+#[derive(thiserror::Error, Debug)]
+#[error("bitbank API error (code={code})")]
+struct ApiError {
+    code: u16,
+}
+
+#[derive(Debug, serde::Deserialize)]
+struct ResponseError {
+    code: u16,
+}
