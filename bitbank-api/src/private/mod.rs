@@ -1,8 +1,5 @@
 use super::*;
-use reqwest::{Client, ClientBuilder};
-
-use derive_builder::Builder;
-use query_params::QueryParams;
+use reqwest::Client;
 
 mod auth;
 pub mod cancel_order;
