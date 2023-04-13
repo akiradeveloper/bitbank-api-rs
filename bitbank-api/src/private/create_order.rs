@@ -2,7 +2,7 @@ use super::*;
 
 #[serde_as]
 #[serde_with::skip_serializing_none]
-#[derive(Builder, Debug, serde::Serialize)]
+#[derive(Builder, Serialize, Debug)]
 #[builder(setter(strip_option, into))]
 pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
@@ -12,7 +12,9 @@ pub struct Params {
     #[builder(default)]
     #[serde_as(as = "Option<DisplayFromStr>")]
     price: Option<f64>,
+    #[serde_as(as = "DisplayFromStr")]
     side: Side,
+    #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "type")]
     order_type: OrderType,
     #[builder(default)]
@@ -23,12 +25,14 @@ pub struct Params {
 }
 
 #[serde_as]
-#[derive(serde::Deserialize, Debug)]
-pub struct CreateOrder {
+#[derive(Deserialize, Debug)]
+pub struct CreatedOrder {
     pub order_id: u64,
     #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
+    #[serde_as(as = "DisplayFromStr")]
     pub side: Side,
+    #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "type")]
     pub order_type: OrderType,
     #[serde_as(as = "DisplayFromStr")]
@@ -48,10 +52,11 @@ pub struct CreateOrder {
     pub expire_at: Option<NaiveDateTime>,
     #[serde_as(as = "Option<DisplayFromStr>")]
     pub trigger_price: Option<f64>,
+    #[serde_as(as = "DisplayFromStr")]
     pub status: OrderStatus,
 }
 
-pub async fn post(cred: Credential, params: Params) -> anyhow::Result<CreateOrder> {
+pub async fn post(cred: Credential, params: Params) -> anyhow::Result<CreatedOrder> {
     let json = serde_json::to_string(&params)?;
     ApiExec { cred }.post("/v1/user/spot/order", json).await
 }
@@ -63,11 +68,11 @@ mod tests {
     #[test]
     fn test_params() -> anyhow::Result<()> {
         let p = ParamsBuilder::default()
-            .pair(Pair(xrp, jpy))
+            .pair(Pair(XRP, JPY))
             .price(50.2)
             .amount(10.1)
-            .side(Side::buy)
-            .order_type(OrderType::stop)
+            .side(Side::Buy)
+            .order_type(OrderType::Stop)
             .build()?;
         dbg!(&p);
         let json = serde_json::to_string(&p)?;

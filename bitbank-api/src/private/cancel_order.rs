@@ -1,7 +1,7 @@
 use super::*;
 
 #[serde_as]
-#[derive(Builder, Debug, serde::Serialize)]
+#[derive(Builder, Serialize, Debug)]
 #[builder(setter(strip_option, into))]
 pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
@@ -10,12 +10,14 @@ pub struct Params {
 }
 
 #[serde_as]
-#[derive(serde::Deserialize, Debug)]
-pub struct CancelOrder {
+#[derive(Deserialize, Debug)]
+pub struct CanceledOrder {
     pub order_id: u64,
     #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
+    #[serde_as(as = "DisplayFromStr")]
     pub side: Side,
+    #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "type")]
     pub order_type: OrderType,
     #[serde_as(as = "DisplayFromStr")]
@@ -39,10 +41,11 @@ pub struct CancelOrder {
     pub triggered_at: Option<NaiveDateTime>,
     #[serde_as(as = "Option<DisplayFromStr>")]
     pub trigger_price: Option<f64>,
+    #[serde_as(as = "DisplayFromStr")]
     pub status: OrderStatus,
 }
 
-pub async fn post(cred: Credential, params: Params) -> anyhow::Result<CancelOrder> {
+pub async fn post(cred: Credential, params: Params) -> anyhow::Result<CanceledOrder> {
     let json = serde_json::to_string(&params)?;
     ApiExec { cred }
         .post("/v1/user/spot/cancel_order", json)

@@ -7,18 +7,15 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dev-dependencies]
-tokio = { version = "1", features = ["full"] }
-futures-util = "0.3"
-anyhow = "1"
 bitbank-api = { path = "../bitbank-api" }
 
-[[example]]
-name = "public-api"
-path = "public_api.rs"
+anyhow = "1"
+futures-util = "0.3"
+tokio = { version = "1", features = ["full"] }
 
 [[example]]
-name = "stream-api"
-path = "stream_api.rs"
+name = "stream"
+path = "stream.rs"
 
 [[example]]
 name = "trade"

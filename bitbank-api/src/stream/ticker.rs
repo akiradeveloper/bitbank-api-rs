@@ -2,7 +2,14 @@ use super::*;
 
 pub use crate::public::ticker::Ticker;
 
-pub async fn connect(pair: Pair) -> anyhow::Result<impl tokio_stream::Stream<Item = Ticker>> {
+#[derive(Builder)]
+#[builder(setter(into))]
+pub struct Params {
+    pair: Pair,
+}
+
+pub async fn connect(params: Params) -> anyhow::Result<impl tokio_stream::Stream<Item = Ticker>> {
+    let pair = params.pair;
     let room_id = format!("ticker_{pair}");
     do_connect(&room_id).await
 }
@@ -14,10 +21,11 @@ mod tests {
     async fn test() -> anyhow::Result<()> {
         use futures_util::{pin_mut, StreamExt};
 
-        let mut n = 0;
-        let st = connect(Pair(xrp, jpy)).await?;
+        let params = ParamsBuilder::default().pair(Pair(XRP, JPY)).build()?;
+        let st = connect(params).await?;
         pin_mut!(st);
-        while let Some(x) = st.next().await {
+        let mut n = 0;
+        while let Some(_) = st.next().await {
             n += 1;
             if n >= 5 {
                 break;
