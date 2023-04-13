@@ -114,7 +114,7 @@ mod tests {
     #[test]
     fn test_path() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(xrp, jpy))
             .candle_type(CandleType::Day1)
             .period(Period::YYYY(2023))
             .build()?;
@@ -126,7 +126,7 @@ mod tests {
     #[tokio::test]
     async fn test_candlestick_yyyy() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(xrp, jpy))
             .candle_type(CandleType::Month1)
             .period(Period::YYYY(2022))
             .build()?;
@@ -138,7 +138,7 @@ mod tests {
     #[tokio::test]
     async fn test_candlestick_yyyymmdd() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(xrp, jpy))
             .candle_type(CandleType::Min15)
             .period(Period::YYYYMMDD {
                 y: 2022,

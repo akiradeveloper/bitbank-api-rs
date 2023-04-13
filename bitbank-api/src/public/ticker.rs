@@ -32,7 +32,7 @@ mod tests {
 
     #[tokio::test]
     async fn test() -> anyhow::Result<()> {
-        let x = get(Pair::xrp_jpy).await?;
+        let x = get(Pair(xrp, jpy)).await?;
         Ok(())
     }
 }

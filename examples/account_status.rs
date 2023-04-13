@@ -7,7 +7,7 @@ async fn main() -> anyhow::Result<()> {
 
     let resp = {
         let params = private::trade_history::ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(Asset::xrp, Asset::jpy))
             .build()?;
         private::trade_history::get(cred.clone(), params).await?
     };

@@ -10,6 +10,7 @@ pub struct Response {
 pub struct Trade {
     pub trade_id: u64,
     pub order_id: u64,
+    #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
     pub side: Side,
     #[serde(rename = "type")]
@@ -78,7 +79,7 @@ mod tests {
     #[test]
     fn test_params() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(xrp, jpy))
             .order(SortOrder::asc)
             .build()?;
         assert_eq!(params.to_query_params(), "?pair=xrp_jpy&order=asc");

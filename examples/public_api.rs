@@ -1,6 +1,8 @@
+use bitbank_api::*;
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let ticker = bitbank_api::public::ticker::get(bitbank_api::Pair::xrp_jpy).await?;
+    let ticker = public::ticker::get(Pair(Asset::xrp, Asset::jpy)).await?;
     dbg!(ticker);
     Ok(())
 }
