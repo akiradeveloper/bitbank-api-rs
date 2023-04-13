@@ -2,8 +2,7 @@ use super::*;
 
 pub use crate::public::ticker::Ticker;
 
-#[derive(Builder)]
-#[builder(setter(into))]
+#[derive(TypedBuilder)]
 pub struct Params {
     pair: Pair,
 }
@@ -21,7 +20,7 @@ mod tests {
     async fn test() -> anyhow::Result<()> {
         use futures_util::{pin_mut, StreamExt};
 
-        let params = ParamsBuilder::default().pair(Pair(XRP, JPY)).build()?;
+        let params = Params::builder().pair(Pair(XRP, JPY)).build();
         let st = connect(params).await?;
         pin_mut!(st);
         let mut n = 0;

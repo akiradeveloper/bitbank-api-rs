@@ -6,9 +6,7 @@ async fn main() -> anyhow::Result<()> {
     // we will make a buy order in non-realistically low price.
     let ticker = {
         use public::ticker::*;
-        let params = ParamsBuilder::default()
-            .pair(Pair(Asset::XRP, Asset::JPY))
-            .build()?;
+        let params = Params::builder().pair(Pair(Asset::XRP, Asset::JPY)).build();
         get(params).await?
     };
     let tgt_price = ticker.low * 0.1;
@@ -18,33 +16,33 @@ async fn main() -> anyhow::Result<()> {
 
     let created = {
         use private::create_order::*;
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(Asset::XRP, Asset::JPY))
             .side(Side::Buy)
             .price(tgt_price)
-            .amount(1)
+            .amount(1.)
             .order_type(OrderType::Limit)
-            .build()?;
+            .build();
         post(cred.clone(), params).await?
     };
     dbg!(&created);
 
     let fetched = {
         use private::fetch_order::*;
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(Asset::XRP, Asset::JPY))
             .order_id(created.order_id)
-            .build()?;
+            .build();
         get(cred.clone(), params).await?
     };
     dbg!(&fetched);
 
     let canceled = {
         use private::cancel_order::*;
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(Asset::XRP, Asset::JPY))
             .order_id(created.order_id)
-            .build()?;
+            .build();
         post(cred.clone(), params).await?
     };
     dbg!(&canceled);

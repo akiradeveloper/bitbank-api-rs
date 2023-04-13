@@ -25,9 +25,8 @@ struct Response {
     statuses: Vec<ExchangeStatus>,
 }
 
-// For design consistency sake, empty params should be given.
-#[derive(Builder)]
-#[builder(setter(into))]
+// For design consistency sake, empty params will be given.
+#[derive(TypedBuilder)]
 pub struct Params {}
 
 pub async fn get(_: Params) -> anyhow::Result<Vec<ExchangeStatus>> {
@@ -42,7 +41,7 @@ mod tests {
     use super::*;
     #[tokio::test]
     async fn test_exchange_status() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default().build()?;
+        let params = Params::builder().build();
         let resp = get(params).await?;
         dbg!(&resp);
         Ok(())

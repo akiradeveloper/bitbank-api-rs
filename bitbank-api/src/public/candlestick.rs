@@ -79,8 +79,7 @@ pub enum Period {
     YYYYMMDD(u16, u8, u8),
 }
 
-#[derive(Builder)]
-#[builder(setter(into))]
+#[derive(TypedBuilder)]
 pub struct Params {
     pair: Pair,
     candle_type: CandleType,
@@ -113,11 +112,11 @@ mod tests {
     use super::*;
     #[test]
     fn test_path() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Day1)
             .period(Period::YYYY(2023))
-            .build()?;
+            .build();
         let path = path(params);
         assert_eq!(path, "/xrp_jpy/candlestick/1day/2023");
         Ok(())
@@ -125,11 +124,11 @@ mod tests {
 
     #[tokio::test]
     async fn test_candlestick_yyyy() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Month1)
             .period(Period::YYYY(2022))
-            .build()?;
+            .build();
         let resp = get(params).await?;
         dbg!(&resp);
         Ok(())
@@ -137,11 +136,11 @@ mod tests {
 
     #[tokio::test]
     async fn test_candlestick_yyyymmdd() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Min15)
             .period(Period::YYYYMMDD(2022, 12, 25))
-            .build()?;
+            .build();
         let resp = get(params).await?;
         dbg!(&resp);
         Ok(())

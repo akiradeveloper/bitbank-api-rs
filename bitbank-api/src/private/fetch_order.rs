@@ -1,7 +1,6 @@
 use super::*;
 
-#[derive(Builder, QueryParams, Debug)]
-#[builder(setter(strip_option, into))]
+#[derive(TypedBuilder, QueryParams, Debug)]
 pub struct Params {
     pair: Pair,
     order_id: u64,

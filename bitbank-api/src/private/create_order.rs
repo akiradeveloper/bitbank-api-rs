@@ -2,15 +2,15 @@ use super::*;
 
 #[serde_as]
 #[serde_with::skip_serializing_none]
-#[derive(Builder, Serialize, Debug)]
-#[builder(setter(strip_option, into))]
+#[derive(TypedBuilder, Serialize, Debug)]
 pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
     pair: Pair,
     #[serde_as(as = "DisplayFromStr")]
     amount: f64,
-    #[builder(default)]
     #[serde_as(as = "Option<DisplayFromStr>")]
+    #[builder(default)]
+    #[builder(setter(strip_option))]
     price: Option<f64>,
     #[serde_as(as = "DisplayFromStr")]
     side: Side,
@@ -18,9 +18,11 @@ pub struct Params {
     #[serde(rename = "type")]
     order_type: OrderType,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     post_only: Option<bool>,
-    #[builder(default)]
     #[serde_as(as = "Option<DisplayFromStr>")]
+    #[builder(default)]
+    #[builder(setter(strip_option))]
     trigger_price: Option<f64>,
 }
 
@@ -67,13 +69,13 @@ mod tests {
 
     #[test]
     fn test_params() -> anyhow::Result<()> {
-        let p = ParamsBuilder::default()
+        let p = Params::builder()
             .pair(Pair(XRP, JPY))
             .price(50.2)
             .amount(10.1)
             .side(Side::Buy)
             .order_type(OrderType::Stop)
-            .build()?;
+            .build();
         dbg!(&p);
         let json = serde_json::to_string(&p)?;
         dbg!(&json);

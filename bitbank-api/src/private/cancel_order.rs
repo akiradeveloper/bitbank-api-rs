@@ -1,8 +1,7 @@
 use super::*;
 
 #[serde_as]
-#[derive(Builder, Serialize, Debug)]
-#[builder(setter(strip_option, into))]
+#[derive(TypedBuilder, Serialize, Debug)]
 pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
     pair: Pair,
