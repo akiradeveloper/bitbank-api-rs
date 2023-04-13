@@ -33,6 +33,7 @@ impl ApiExec {
         let data: R = serde_json::from_value(data)?;
         Ok(data)
     }
+
     /// path: /v1/x/y/z
     /// body: json
     async fn post<R: serde::de::DeserializeOwned>(

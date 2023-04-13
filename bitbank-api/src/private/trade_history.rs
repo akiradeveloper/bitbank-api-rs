@@ -1,24 +1,27 @@
 use super::*;
 
-#[derive(serde::Deserialize)]
+#[derive(Deserialize)]
 pub struct Response {
     pub trades: Vec<Trade>,
 }
 
 #[serde_as]
-#[derive(serde::Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct Trade {
     pub trade_id: u64,
     pub order_id: u64,
     #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
+    #[serde_as(as = "DisplayFromStr")]
     pub side: Side,
+    #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "type")]
     pub order_type: OrderType,
     #[serde_as(as = "DisplayFromStr")]
     pub amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub price: f64,
+    #[serde_as(as = "DisplayFromStr")]
     pub maker_taker: MakerTaker,
     #[serde_as(as = "DisplayFromStr")]
     pub fee_amount_base: f64,
@@ -44,10 +47,11 @@ pub struct Params {
     order: Option<SortOrder>,
 }
 
-pub async fn get(cred: Credential, params: Params) -> anyhow::Result<Response> {
-    ApiExec { cred }
+pub async fn get(cred: Credential, params: Params) -> anyhow::Result<Vec<Trade>> {
+    let resp: Response = ApiExec { cred }
         .get("/v1/user/spot/trade_history", params.to_query_params())
-        .await
+        .await?;
+    Ok(resp.trades)
 }
 
 #[cfg(test)]
@@ -79,8 +83,8 @@ mod tests {
     #[test]
     fn test_params() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair(xrp, jpy))
-            .order(SortOrder::asc)
+            .pair(Pair(XRP, JPY))
+            .order(SortOrder::Asc)
             .build()?;
         assert_eq!(params.to_query_params(), "?pair=xrp_jpy&order=asc");
         Ok(())

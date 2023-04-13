@@ -10,6 +10,8 @@ enum ParsedMessage<R: serde::de::DeserializeOwned> {
 }
 
 fn parse_message<R: serde::de::DeserializeOwned>(msg: Message) -> Option<ParsedMessage<R>> {
+    use std::str::FromStr;
+
     let txt = msg.into_text().ok()?;
 
     // Find the boundary between number and JSON

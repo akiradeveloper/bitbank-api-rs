@@ -1,11 +1,11 @@
 use super::*;
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, Deserialize)]
 struct Response {
     candlestick: Vec<CandlestickResponse>,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, Deserialize)]
 struct CandlestickResponse {
     ohlcv: Vec<serde_json::Value>,
 }
@@ -44,7 +44,7 @@ impl Candlestick {
     }
 }
 
-#[derive(Debug, Clone, derive_more::Display, serde::Deserialize)]
+#[derive(derive_more::Display, Debug, Clone)]
 pub enum CandleType {
     #[display(fmt = "1min")]
     Min1,
@@ -71,12 +71,12 @@ pub enum CandleType {
     Month1,
 }
 
-#[derive(Clone, derive_more::Display)]
+#[derive(derive_more::Display, Clone)]
 pub enum Period {
     #[display(fmt = "{_0}")]
     YYYY(u16),
-    #[display(fmt = "{y}{m}{d}")]
-    YYYYMMDD { y: u16, m: u8, d: u8 },
+    #[display(fmt = "{_0}{_1}{_2}")]
+    YYYYMMDD(u16, u8, u8),
 }
 
 #[derive(Builder)]
@@ -114,7 +114,7 @@ mod tests {
     #[test]
     fn test_path() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair(xrp, jpy))
+            .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Day1)
             .period(Period::YYYY(2023))
             .build()?;
@@ -126,7 +126,7 @@ mod tests {
     #[tokio::test]
     async fn test_candlestick_yyyy() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair(xrp, jpy))
+            .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Month1)
             .period(Period::YYYY(2022))
             .build()?;
@@ -138,13 +138,9 @@ mod tests {
     #[tokio::test]
     async fn test_candlestick_yyyymmdd() -> anyhow::Result<()> {
         let params = ParamsBuilder::default()
-            .pair(Pair(xrp, jpy))
+            .pair(Pair(XRP, JPY))
             .candle_type(CandleType::Min15)
-            .period(Period::YYYYMMDD {
-                y: 2022,
-                m: 12,
-                d: 25,
-            })
+            .period(Period::YYYYMMDD(2022, 12, 25))
             .build()?;
         let resp = get(params).await?;
         dbg!(&resp);

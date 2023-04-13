@@ -1,13 +1,14 @@
 use derive_builder::Builder;
-use derive_more::Display;
 use query_params::QueryParams;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_with::chrono::NaiveDateTime;
 use serde_with::TimestampMilliSeconds;
-use std::str::FromStr;
 
+/// Private API with authentication.
 pub mod private;
+/// Public API without authentication.
 pub mod public;
+/// Public streaming API.
 pub mod stream;
 
 use serde_with::{serde_as, DisplayFromStr};
@@ -15,11 +16,11 @@ use serde_with::{serde_as, DisplayFromStr};
 /// Asset pair
 /// - 0: base asset
 /// - 1: quote asset
-#[derive(Display, Debug, Clone)]
+#[derive(derive_more::Display, Debug, Clone)]
 #[display(fmt = "{_0}_{_1}")]
 pub struct Pair(pub Asset, pub Asset);
 
-impl FromStr for Pair {
+impl std::str::FromStr for Pair {
     type Err = anyhow::Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         // Find the _ between the pair.
@@ -36,78 +37,90 @@ impl FromStr for Pair {
     }
 }
 
-#[derive(Debug, Clone, strum_macros::Display, strum_macros::EnumString)]
+/// Asset type
+#[derive(strum::EnumString, strum::Display, Debug, Clone)]
+#[strum(serialize_all = "snake_case")]
 pub enum Asset {
-    jpy,
-    btc,
-    xrp,
-    ltc,
-    eth,
-    mona,
-    bcc,
-    xlm,
-    qtum,
-    bat,
-    omg,
-    xym,
-    link,
-    mkr,
-    boba,
-    enj,
-    matic,
-    dot,
-    doge,
-    astr,
-    ada,
-    avax,
-    axs,
-    flr,
-    sand,
-    gala,
-    ape,
-    chz,
-    oas,
+    XRP,
+    JPY,
+    BTC,
+    LTC,
+    ETH,
+    MONA,
+    BCC,
+    XLM,
+    QTUM,
+    BAT,
+    OMG,
+    XYM,
+    LINK,
+    MKR,
+    BOBA,
+    ENJ,
+    MATIC,
+    DOT,
+    DOGE,
+    ASTR,
+    ADA,
+    AVAX,
+    AXS,
+    FLR,
+    SAND,
+    GALA,
+    APE,
+    CHZ,
+    OAS,
 }
 #[cfg(test)]
 pub use Asset::*;
 
-#[derive(Display, Debug, Clone)]
+/// desc or asc
+#[derive(strum::EnumString, strum::Display, Debug, Clone)]
+#[strum(serialize_all = "snake_case")]
 pub enum SortOrder {
-    desc,
-    asc,
+    Desc,
+    Asc,
 }
 
-#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+/// buy or sell
+#[derive(strum::EnumString, strum::Display, Debug, Clone)]
+#[strum(serialize_all = "snake_case")]
 pub enum Side {
-    buy,
-    sell,
+    Buy,
+    Sell,
 }
 
-#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+/// limit or market or stop or stop limit
+#[derive(strum::EnumString, strum::Display, Debug, Clone)]
+#[strum(serialize_all = "snake_case")]
 pub enum OrderType {
-    limit,
-    market,
-    stop,
-    stop_limit,
+    Limit,
+    Market,
+    Stop,
+    StopLimit,
 }
 
-#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+/// maker or taker
+#[derive(strum::EnumString, Debug, Clone)]
+#[strum(serialize_all = "snake_case")]
 pub enum MakerTaker {
-    maker,
-    taker,
+    Maker,
+    Taker,
 }
 
-#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
+/// Status of order
+#[derive(strum::EnumString, Debug, Clone)]
+#[strum(serialize_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderStatus {
-    INACTIVE,
-    UNFILLED,
-    PARTIALLY_FILLED,
-    FULLY_FILLED,
-    CANCELED_UNFILLED,
-    CANCELED_PARTIALLY_FILLED,
+    Inactive,
+    Unfilled,
+    ParitallyFilled,
+    FullyFilled,
+    CanceledUnfilled,
+    CanceledPartiallyFilled,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Deserialize, Debug)]
 struct Response {
     success: u16,
     data: serde_json::Value,
@@ -130,7 +143,7 @@ struct ApiError {
     code: u16,
 }
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Deserialize, Debug)]
 struct ResponseError {
     code: u16,
 }
