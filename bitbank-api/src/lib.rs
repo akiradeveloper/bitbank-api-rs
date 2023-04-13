@@ -4,6 +4,7 @@ use query_params::QueryParams;
 use serde::Deserialize;
 use serde_with::chrono::NaiveDateTime;
 use serde_with::TimestampMilliSeconds;
+use std::str::FromStr;
 
 pub mod private;
 pub mod public;
@@ -11,58 +12,64 @@ pub mod stream;
 
 use serde_with::{serde_as, DisplayFromStr};
 
-#[derive(Display, Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub enum Pair {
-    xrp_jpy,
-    btc_jpy,
-    ltc_jpy,
-    eth_jpy,
-    mona_jpy,
-    bcc_jpy,
-    xlm_jpy,
-    qtum_jpy,
-    bat_jpy,
-    omg_jpy,
-    xym_jpy,
-    link_jpy,
-    mkr_jpy,
-    boba_jpy,
-    enj_jpy,
-    matic_jpy,
-    dot_jpy,
-    doge_jpy,
-    astr_jpy,
-    ada_jpy,
-    avax_jpy,
-    axs_jpy,
-    flr_jpy,
-    sand_jpy,
-    gala_jpy,
-    ape_jpy,
-    chz_jpy,
-    oas_jpy,
-    xrp_btc,
-    ltc_btc,
-    eth_btc,
-    bcc_btc,
-    xlm_btc,
-    mona_btc,
-    qtum_btc,
-    matic_btc,
-    bat_btc,
-    omg_btc,
-    boba_btc,
-    xym_btc,
-    link_btc,
-    mkr_btc,
-    enj_btc,
+/// Asset pair
+/// - 0: base asset
+/// - 1: quote asset
+#[derive(Display, Debug, Clone)]
+#[display(fmt = "{_0}_{_1}")]
+pub struct Pair(pub Asset, pub Asset);
+
+impl FromStr for Pair {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // Find the _ between the pair.
+        let sep = s
+            .char_indices()
+            .find(|(_, c)| *c == '_')
+            .map(|(idx, _)| idx)
+            .ok_or(anyhow::anyhow!("failed to parse pair"))?;
+
+        let x = s[0..sep].parse()?;
+        let y = s[sep + 1..].parse()?;
+
+        Ok(Self(x, y))
+    }
 }
 
-#[derive(Display)]
+#[derive(Debug, Clone, strum_macros::Display, strum_macros::EnumString)]
 pub enum Asset {
     jpy,
+    btc,
     xrp,
+    ltc,
+    eth,
+    mona,
+    bcc,
+    xlm,
+    qtum,
+    bat,
+    omg,
+    xym,
+    link,
+    mkr,
+    boba,
+    enj,
+    matic,
+    dot,
+    doge,
+    astr,
+    ada,
+    avax,
+    axs,
+    flr,
+    sand,
+    gala,
+    ape,
+    chz,
+    oas,
 }
+#[cfg(test)]
+pub use Asset::*;
 
 #[derive(Display, Debug, Clone)]
 pub enum SortOrder {

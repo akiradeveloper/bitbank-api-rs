@@ -4,6 +4,7 @@ use super::*;
 #[derive(Builder, Debug, serde::Serialize)]
 #[builder(setter(strip_option, into))]
 pub struct Params {
+    #[serde_as(as = "DisplayFromStr")]
     pair: Pair,
     order_id: u64,
 }
@@ -12,6 +13,7 @@ pub struct Params {
 #[derive(serde::Deserialize, Debug)]
 pub struct CancelOrder {
     pub order_id: u64,
+    #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
     pub side: Side,
     #[serde(rename = "type")]

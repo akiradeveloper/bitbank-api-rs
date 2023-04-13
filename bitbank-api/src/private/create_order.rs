@@ -5,6 +5,7 @@ use super::*;
 #[derive(Builder, Debug, serde::Serialize)]
 #[builder(setter(strip_option, into))]
 pub struct Params {
+    #[serde_as(as = "DisplayFromStr")]
     pair: Pair,
     #[serde_as(as = "DisplayFromStr")]
     amount: f64,
@@ -25,6 +26,7 @@ pub struct Params {
 #[derive(serde::Deserialize, Debug)]
 pub struct CreateOrder {
     pub order_id: u64,
+    #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
     pub side: Side,
     #[serde(rename = "type")]
@@ -61,7 +63,7 @@ mod tests {
     #[test]
     fn test_params() -> anyhow::Result<()> {
         let p = ParamsBuilder::default()
-            .pair(Pair::xrp_jpy)
+            .pair(Pair(xrp, jpy))
             .price(50.2)
             .amount(10.1)
             .side(Side::buy)

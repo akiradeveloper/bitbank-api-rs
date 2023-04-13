@@ -11,10 +11,11 @@ pub enum Status {
 #[serde_as]
 #[derive(serde::Deserialize, Debug)]
 pub struct ExchangeStatus {
-    pair: Pair,
-    status: Status,
     #[serde_as(as = "DisplayFromStr")]
-    min_amount: f64,
+    pub pair: Pair,
+    pub status: Status,
+    #[serde_as(as = "DisplayFromStr")]
+    pub min_amount: f64,
 }
 
 #[derive(serde::Deserialize, Debug)]

@@ -15,7 +15,7 @@ mod tests {
         use futures_util::{pin_mut, StreamExt};
 
         let mut n = 0;
-        let st = connect(Pair::xrp_jpy).await?;
+        let st = connect(Pair(xrp, jpy)).await?;
         pin_mut!(st);
         while let Some(x) = st.next().await {
             n += 1;

@@ -11,6 +11,7 @@ pub struct Params {
 #[derive(serde::Deserialize, Debug)]
 pub struct OrderInfo {
     pub order_id: u64,
+    #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
     pub side: Side,
     #[serde(rename = "type")]
