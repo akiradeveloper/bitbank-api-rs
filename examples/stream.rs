@@ -4,9 +4,7 @@ use futures_util::{pin_mut, StreamExt};
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     use stream::ticker::*;
-    let params = ParamsBuilder::default()
-        .pair(Pair(Asset::XRP, Asset::JPY))
-        .build()?;
+    let params = Params::builder().pair(Pair(Asset::XRP, Asset::JPY)).build();
     let st = connect(params).await?;
     pin_mut!(st);
     while let Some(ticker) = st.next().await {

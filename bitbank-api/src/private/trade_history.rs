@@ -1,7 +1,7 @@
 use super::*;
 
 #[derive(Deserialize)]
-pub struct Response {
+struct Response {
     pub trades: Vec<Trade>,
 }
 
@@ -31,19 +31,23 @@ pub struct Trade {
     pub executed_at: NaiveDateTime,
 }
 
-#[derive(Builder, QueryParams, Debug)]
-#[builder(setter(strip_option, into))]
+#[derive(TypedBuilder, QueryParams, Debug)]
 pub struct Params {
     pair: Pair,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     count: Option<u16>,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     order_id: Option<u64>,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     since: Option<NaiveDateTime>,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     end: Option<NaiveDateTime>,
     #[builder(default)]
+    #[builder(setter(strip_option))]
     order: Option<SortOrder>,
 }
 
@@ -82,10 +86,10 @@ mod tests {
     }
     #[test]
     fn test_params() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default()
+        let params = Params::builder()
             .pair(Pair(XRP, JPY))
             .order(SortOrder::Asc)
-            .build()?;
+            .build();
         assert_eq!(params.to_query_params(), "?pair=xrp_jpy&order=asc");
         Ok(())
     }

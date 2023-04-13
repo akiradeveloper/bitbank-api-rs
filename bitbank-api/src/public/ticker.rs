@@ -21,8 +21,7 @@ pub struct Ticker {
     pub timestamp: NaiveDateTime,
 }
 
-#[derive(Builder)]
-#[builder(setter(into))]
+#[derive(TypedBuilder)]
 pub struct Params {
     pair: Pair,
 }
@@ -39,7 +38,7 @@ mod tests {
 
     #[tokio::test]
     async fn test() -> anyhow::Result<()> {
-        let params = ParamsBuilder::default().pair(Pair(XRP, JPY)).build()?;
+        let params = Params::builder().pair(Pair(XRP, JPY)).build();
         let _ = get(params).await?;
         Ok(())
     }
