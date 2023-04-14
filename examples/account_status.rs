@@ -6,10 +6,9 @@ async fn main() -> anyhow::Result<()> {
     dbg!(&cred);
 
     let resp = {
-        let params = private::trade_history::Params::builder()
-            .pair(Pair(Asset::XRP, Asset::JPY))
-            .build();
-        private::trade_history::get(cred.clone(), params).await?
+        use private::trade_history::*;
+        let params = Params::builder().pair(Pair(Asset::XRP, Asset::JPY)).build();
+        get(cred.clone(), params).await?
     };
     dbg!(&resp);
 

@@ -1,5 +1,5 @@
 [workspace]
 members = [
-	"bitbank-api",
-	"examples",
+  "bitbank-api",
+  "examples",
 ]
