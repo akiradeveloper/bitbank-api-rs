@@ -2,6 +2,7 @@ use super::*;
 
 pub mod candlestick;
 pub mod exchange_status;
+pub mod pairs;
 pub mod ticker;
 
 async fn do_get<R: serde::de::DeserializeOwned>(path: String) -> anyhow::Result<R> {
