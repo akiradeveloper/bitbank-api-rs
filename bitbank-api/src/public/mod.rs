@@ -1,6 +1,7 @@
 use super::*;
 
 pub mod candlestick;
+pub mod depth;
 pub mod exchange_status;
 pub mod pairs;
 pub mod ticker;
