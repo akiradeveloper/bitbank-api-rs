@@ -3,6 +3,7 @@ use std::{cell::RefCell, rc::Rc};
 use tokio_tungstenite::tungstenite::Message;
 
 pub mod ticker;
+pub mod transactions;
 
 enum ParsedMessage<R: serde::de::DeserializeOwned> {
     Parsed(R),

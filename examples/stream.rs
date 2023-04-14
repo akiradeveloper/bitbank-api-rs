@@ -7,8 +7,8 @@ async fn main() -> anyhow::Result<()> {
     let params = Params::builder().pair(Pair(Asset::XRP, Asset::JPY)).build();
     let st = connect(params).await?;
     pin_mut!(st);
-    while let Some(ticker) = st.next().await {
-        dbg!(ticker);
+    while let Some(x) = st.next().await {
+        dbg!(x);
     }
     Ok(())
 }
