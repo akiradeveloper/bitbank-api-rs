@@ -5,6 +5,7 @@ pub mod depth;
 pub mod exchange_status;
 pub mod pairs;
 pub mod ticker;
+pub mod tickers;
 pub mod transactions;
 
 async fn do_get<R: serde::de::DeserializeOwned>(path: String) -> anyhow::Result<R> {
