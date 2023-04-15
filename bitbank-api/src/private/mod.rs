@@ -6,6 +6,7 @@ pub mod cancel_order;
 pub mod cancel_orders;
 pub mod create_order;
 pub mod fetch_order;
+pub mod fetch_orders;
 pub mod trade_history;
 
 pub use auth::Credential;
