@@ -27,6 +27,7 @@ pub struct CanceledOrder {
     pub executed_amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub price: f64,
+    #[serde_as(deserialize_as = "DefaultOnNull")]
     pub post_only: bool,
     #[serde_as(as = "DisplayFromStr")]
     pub average_price: f64,

@@ -25,6 +25,10 @@ pub struct OrderInfo {
     pub executed_amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub price: f64,
+    // post_only only exists iff the order-type is limit otherwise omitted.
+    // Typing `Option<bool>` here doesn't mean more than taking a simple `bool` and
+    // sane default in case of omission.
+    #[serde_as(deserialize_as = "DefaultOnNull")]
     pub post_only: bool,
     #[serde_as(as = "DisplayFromStr")]
     pub average_price: f64,
