@@ -5,6 +5,7 @@ mod auth;
 pub mod cancel_order;
 pub mod cancel_orders;
 pub mod create_order;
+pub mod fetch_active_orders;
 pub mod fetch_order;
 pub mod fetch_orders;
 pub mod trade_history;
