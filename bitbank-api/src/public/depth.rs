@@ -13,7 +13,7 @@ pub struct Order {
 }
 
 impl Order {
-    pub fn from_json_value(mut value: serde_json::Value) -> Option<Self> {
+    pub (crate) fn from_json_value(mut value: serde_json::Value) -> Option<Self> {
         let arr = value.as_array_mut().unwrap();
         arr.reverse();
         let mut out = [0.; 2];
