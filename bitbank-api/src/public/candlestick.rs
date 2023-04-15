@@ -106,12 +106,7 @@ fn path(params: Params) -> String {
 pub async fn get(params: Params) -> anyhow::Result<Vec<Candlestick>> {
     let resp: raw::Response = do_get(path(params)).await?;
     let ohlcv = resp.candlestick.0;
-    let mut out = vec![];
-    for x in ohlcv.ohlcv {
-        let y = Candlestick::new(x);
-        out.push(y);
-    }
-    Ok(out)
+    Ok(ohlcv.ohlcv.into_iter().map(Candlestick::new).collect())
 }
 
 #[cfg(test)]
