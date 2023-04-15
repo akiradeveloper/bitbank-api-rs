@@ -1,5 +1,5 @@
-use query_params::QueryParams;
 use serde::{Deserialize, Serialize};
+use serde_urlencoded::to_string as to_query_params;
 use serde_with::chrono::NaiveDateTime;
 use serde_with::DefaultOnNull;
 use serde_with::TimestampMilliSeconds;

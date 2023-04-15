@@ -17,7 +17,7 @@ struct ApiExec {
 }
 impl ApiExec {
     /// path: /v1/x/y/z
-    /// params: ?a=b&c=d
+    /// params: a=b&c=d
     async fn get<R: serde::de::DeserializeOwned>(
         self,
         path: impl Into<String>,
@@ -29,6 +29,11 @@ impl ApiExec {
             params: params.clone(),
         }
         .create(self.cred)?;
+        let params = if params.len() > 0 {
+            format!("?{params}")
+        } else {
+            format!("")
+        };
         let url = format!("https://api.bitbank.cc{path}{params}");
         let (cli, req) = Client::new().get(url).headers(auth_headers).build_split();
         let resp: Response = cli.execute(req?).await?.json().await?;
