@@ -9,20 +9,17 @@ pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
     amount: f64,
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     price: Option<f64>,
     #[serde_as(as = "DisplayFromStr")]
     side: Side,
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "type")]
     order_type: OrderType,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     post_only: Option<bool>,
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     trigger_price: Option<f64>,
 }
 
