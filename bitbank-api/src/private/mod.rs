@@ -3,6 +3,7 @@ use reqwest::Client;
 
 mod auth;
 pub mod cancel_order;
+pub mod cancel_orders;
 pub mod create_order;
 pub mod fetch_order;
 pub mod trade_history;
