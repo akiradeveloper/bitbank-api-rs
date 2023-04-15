@@ -21,7 +21,7 @@ pub struct Candlestick {
 }
 
 impl Candlestick {
-    fn from(mut value: serde_json::Value) -> Option<Self> {
+    fn from_json_value(mut value: serde_json::Value) -> Option<Self> {
         let arr = value.as_array_mut().unwrap();
         arr.reverse();
         let mut out = [0.; 5];
@@ -101,7 +101,8 @@ pub async fn get(params: Params) -> anyhow::Result<Vec<Candlestick>> {
         .ok_or(anyhow::anyhow!("response is empty"))?;
     let mut out = vec![];
     for x in resp.ohlcv {
-        let y = Candlestick::from(x).ok_or(anyhow::anyhow!("failed to parse a candlestick"))?;
+        let y = Candlestick::from_json_value(x)
+            .ok_or(anyhow::anyhow!("failed to parse a candlestick"))?;
         out.push(y);
     }
     Ok(out)

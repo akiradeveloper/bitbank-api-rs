@@ -2,6 +2,8 @@ use super::*;
 use std::{cell::RefCell, rc::Rc};
 use tokio_tungstenite::tungstenite::Message;
 
+pub mod depth_diff;
+pub mod depth_whole;
 pub mod ticker;
 pub mod transactions;
 
