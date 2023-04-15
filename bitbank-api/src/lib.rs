@@ -1,6 +1,7 @@
 use query_params::QueryParams;
 use serde::{Deserialize, Serialize};
 use serde_with::chrono::NaiveDateTime;
+use serde_with::DefaultOnNull;
 use serde_with::TimestampMilliSeconds;
 use typed_builder::TypedBuilder;
 

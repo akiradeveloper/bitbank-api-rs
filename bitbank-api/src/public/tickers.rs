@@ -3,6 +3,8 @@ use super::*;
 #[serde_as]
 #[derive(Deserialize, Debug)]
 pub struct Ticker {
+    #[serde_as(as = "DisplayFromStr")]
+    pub pair: Pair,
     #[serde_as(deserialize_as = "DefaultOnNull<DisplayFromStr>")]
     pub sell: f64,
     #[serde_as(deserialize_as = "DefaultOnNull<DisplayFromStr>")]
@@ -21,15 +23,15 @@ pub struct Ticker {
     pub timestamp: NaiveDateTime,
 }
 
-#[derive(TypedBuilder)]
-pub struct Params {
-    pair: Pair,
-}
+#[derive(Deserialize, Debug)]
+struct Response(Vec<Ticker>);
 
-pub async fn get(params: Params) -> anyhow::Result<Ticker> {
-    let pair = params.pair;
-    let path = format!("/{}/ticker", pair);
-    do_get(path).await
+#[derive(TypedBuilder)]
+pub struct Params {}
+
+pub async fn get(_: Params) -> anyhow::Result<Vec<Ticker>> {
+    let resp: Response = do_get("/tickers".to_owned()).await?;
+    Ok(resp.0)
 }
 
 #[cfg(test)]
@@ -38,8 +40,9 @@ mod tests {
 
     #[tokio::test]
     async fn test() -> anyhow::Result<()> {
-        let params = Params::builder().pair(Pair(XRP, JPY)).build();
-        let _ = get(params).await?;
+        let params = Params::builder().build();
+        let x = get(params).await?;
+        dbg!(&x);
         Ok(())
     }
 }
