@@ -26,8 +26,7 @@ pub struct Date(u16, u8, u8);
 #[derive(TypedBuilder)]
 pub struct Params {
     pair: Pair,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     date: Option<Date>,
 }
 

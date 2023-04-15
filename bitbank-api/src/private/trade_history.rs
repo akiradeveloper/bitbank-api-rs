@@ -36,22 +36,17 @@ pub struct Trade {
 pub struct Params {
     #[serde_as(as = "DisplayFromStr")]
     pair: Pair,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     count: Option<u16>,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     order_id: Option<u64>,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
     since: Option<NaiveDateTime>,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
     end: Option<NaiveDateTime>,
-    #[builder(default)]
-    #[builder(setter(strip_option))]
+    #[builder(default, setter(strip_option))]
     #[serde_as(as = "Option<DisplayFromStr>")]
     order: Option<SortOrder>,
 }
