@@ -1,17 +1,13 @@
 use super::*;
 
 pub use crate::public::depth::Order;
-
-#[derive(TypedBuilder)]
-pub struct Params {
-    pair: Pair,
-}
+use crate::public::depth::RawOrder;
 
 #[serde_as]
 #[derive(Deserialize, Debug)]
 struct RawResponse {
-    a: Vec<serde_json::Value>,
-    b: Vec<serde_json::Value>,
+    a: Vec<RawOrder>,
+    b: Vec<RawOrder>,
     #[serde_as(as = "TimestampMilliSeconds")]
     t: NaiveDateTime,
     #[serde_as(as = "DisplayFromStr")]
@@ -26,13 +22,9 @@ pub struct DepthDiff {
     pub sequence_id: u64,
 }
 
-fn conv_list(xs: Vec<serde_json::Value>) -> Vec<Order> {
-    let mut out = vec![];
-    for x in xs {
-        let y = Order::from_json_value(x).unwrap();
-        out.push(y);
-    }
-    out
+#[derive(TypedBuilder)]
+pub struct Params {
+    pair: Pair,
 }
 
 pub async fn connect(
@@ -44,8 +36,8 @@ pub async fn connect(
     let room_id = format!("depth_diff_{pair}");
     let raw = do_connect::<RawResponse>(&room_id).await?;
     let st = raw.map(|x| DepthDiff {
-        asks: conv_list(x.a), // TODO error handling
-        bids: conv_list(x.b),
+        asks: x.a.into_iter().map(Order::new).collect(),
+        bids: x.b.into_iter().map(Order::new).collect(),
         timestamp: x.t,
         sequence_id: x.s,
     });

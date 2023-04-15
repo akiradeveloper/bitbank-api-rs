@@ -1,37 +1,36 @@
 use super::*;
 
 #[derive(Deserialize, Debug)]
-struct Response {
-    asks: Vec<serde_json::Value>,
-    bids: Vec<serde_json::Value>,
+struct RawResponse {
+    asks: Vec<RawOrder>,
+    bids: Vec<RawOrder>,
 }
+
+#[serde_as]
+#[derive(Deserialize, Debug)]
+pub(crate) struct RawOrder(
+    #[serde_as(as = "DisplayFromStr")] f64,
+    #[serde_as(as = "DisplayFromStr")] f64,
+);
 
 #[derive(Debug)]
 pub struct Order {
     pub price: f64,
     pub amount: f64,
 }
-
 impl Order {
-    pub (crate) fn from_json_value(mut value: serde_json::Value) -> Option<Self> {
-        let arr = value.as_array_mut().unwrap();
-        arr.reverse();
-        let mut out = [0.; 2];
-        for i in 0..2 {
-            let v: f64 = arr.pop()?.as_str()?.parse().ok()?;
-            out[i] = v;
+    pub(crate) fn new(x: RawOrder) -> Self {
+        Self {
+            price: x.0,
+            amount: x.1,
         }
-        Some(Self {
-            price: out[0],
-            amount: out[1],
-        })
     }
 }
 
 #[derive(Default, Debug)]
 pub struct Depth {
-    asks: Vec<Order>,
-    bids: Vec<Order>,
+    pub asks: Vec<Order>,
+    pub bids: Vec<Order>,
 }
 
 #[derive(TypedBuilder)]
@@ -41,19 +40,11 @@ pub struct Params {
 
 pub async fn get(params: Params) -> anyhow::Result<Depth> {
     let path = format!("/{}/depth", params.pair);
-    let resp: Response = do_get(path).await?;
-    let mut out = Depth::default();
-    for x in resp.asks {
-        let y =
-            Order::from_json_value(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
-        out.asks.push(y);
-    }
-    for x in resp.bids {
-        let y =
-            Order::from_json_value(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
-        out.bids.push(y);
-    }
-    Ok(out)
+    let resp: RawResponse = do_get(path).await?;
+    Ok(Depth {
+        asks: resp.asks.into_iter().map(Order::new).collect(),
+        bids: resp.bids.into_iter().map(Order::new).collect(),
+    })
 }
 
 #[cfg(test)]

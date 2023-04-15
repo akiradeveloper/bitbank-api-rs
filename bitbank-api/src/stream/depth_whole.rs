@@ -1,21 +1,22 @@
 use super::*;
 
 pub use crate::public::depth::Order;
-
-#[derive(TypedBuilder)]
-pub struct Params {
-    pair: Pair,
-}
+use crate::public::depth::RawOrder;
 
 #[serde_as]
 #[derive(Deserialize, Debug)]
 struct RawResponse {
-    asks: Vec<serde_json::Value>,
-    bids: Vec<serde_json::Value>,
+    asks: Vec<RawOrder>,
+    bids: Vec<RawOrder>,
     #[serde_as(as = "TimestampMilliSeconds")]
     timestamp: NaiveDateTime,
     #[serde_as(as = "DisplayFromStr")]
     sequenceId: u64,
+}
+
+#[derive(TypedBuilder)]
+pub struct Params {
+    pair: Pair,
 }
 
 #[derive(Debug)]
@@ -24,15 +25,6 @@ pub struct DepthWhole {
     pub bids: Vec<Order>,
     pub timestamp: NaiveDateTime,
     pub sequence_id: u64,
-}
-
-fn conv_list(xs: Vec<serde_json::Value>) -> Vec<Order> {
-    let mut out = vec![];
-    for x in xs {
-        let y = Order::from_json_value(x).unwrap();
-        out.push(y);
-    }
-    out
 }
 
 pub async fn connect(
@@ -44,8 +36,8 @@ pub async fn connect(
     let room_id = format!("depth_whole_{pair}");
     let raw = do_connect::<RawResponse>(&room_id).await?;
     let st = raw.map(|x| DepthWhole {
-        asks: conv_list(x.asks),
-        bids: conv_list(x.bids),
+        asks: x.asks.into_iter().map(Order::new).collect(),
+        bids: x.bids.into_iter().map(Order::new).collect(),
         timestamp: x.timestamp,
         sequence_id: x.sequenceId,
     });
