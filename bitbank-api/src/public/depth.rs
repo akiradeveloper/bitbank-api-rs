@@ -13,7 +13,7 @@ pub struct Order {
 }
 
 impl Order {
-    fn from(mut value: serde_json::Value) -> Option<Self> {
+    pub fn from_json_value(mut value: serde_json::Value) -> Option<Self> {
         let arr = value.as_array_mut().unwrap();
         arr.reverse();
         let mut out = [0.; 2];
@@ -44,11 +44,13 @@ pub async fn get(params: Params) -> anyhow::Result<Depth> {
     let resp: Response = do_get(path).await?;
     let mut out = Depth::default();
     for x in resp.asks {
-        let y = Order::from(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
+        let y =
+            Order::from_json_value(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
         out.asks.push(y);
     }
     for x in resp.bids {
-        let y = Order::from(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
+        let y =
+            Order::from_json_value(x).ok_or(anyhow::anyhow!("failed to parse a depth order"))?;
         out.bids.push(y);
     }
     Ok(out)
