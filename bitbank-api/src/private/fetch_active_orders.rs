@@ -1,7 +1,5 @@
 use super::*;
 
-pub use super::fetch_order::OrderInfo;
-
 #[derive(Deserialize)]
 struct Response {
     orders: Vec<OrderInfo>,

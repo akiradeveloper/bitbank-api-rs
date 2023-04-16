@@ -8,8 +8,6 @@ pub struct Params {
     order_ids: Vec<u64>,
 }
 
-pub use super::fetch_order::OrderInfo;
-
 #[derive(Deserialize)]
 struct Response {
     orders: Vec<OrderInfo>,
