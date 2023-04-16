@@ -12,7 +12,7 @@ mod raw {
         pub Ohlcv,
         // This is a workaround.
         // Without this, newtype tries to deserialize as x not as [x]
-        #[serde(skip)] bool,
+        #[serde(skip)] (),
     );
 
     #[derive(Deserialize, Debug)]
