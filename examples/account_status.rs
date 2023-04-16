@@ -3,7 +3,6 @@ use bitbank_api::*;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let cred = private::Credential::from_env()?;
-    dbg!(&cred);
 
     eprintln!("trade history");
     let resp = {
