@@ -9,7 +9,7 @@ pub enum Status {
 }
 
 #[serde_as]
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Deposit {
     pub uuid: String,
     #[serde_as(as = "DisplayFromStr")]
