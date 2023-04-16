@@ -26,16 +26,18 @@ impl ApiExec {
         params: String,
     ) -> anyhow::Result<R> {
         let path = path.into();
-        let auth_headers = auth::GetAuth {
-            path: path.clone(),
-            params: params.clone(),
-        }
-        .create(self.cred)?;
         let params = if params.len() > 0 {
             format!("?{params}")
         } else {
             format!("")
         };
+
+        let auth_headers = auth::GetAuth {
+            path: path.clone(),
+            params: params.clone(),
+        }
+        .create(self.cred)?;
+
         let url = format!("https://api.bitbank.cc{path}{params}");
         let (cli, req) = Client::new().get(url).headers(auth_headers).build_split();
         let resp: Response = cli.execute(req?).await?.json().await?;

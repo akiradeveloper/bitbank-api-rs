@@ -14,6 +14,7 @@ pub struct Deposit {
     pub uuid: String,
     #[serde_as(as = "DisplayFromStr")]
     pub asset: Asset,
+    #[serde_as(as = "DisplayFromStr")]
     pub amount: f64,
     /// Exists only for crytos.
     pub txid: Option<String>,
@@ -48,7 +49,7 @@ pub struct Params {
 
 pub async fn get(cred: Credential, params: Params) -> anyhow::Result<Vec<Deposit>> {
     let resp: Response = ApiExec { cred }
-        .get("/v1/user/spot/deposit_history", to_query_params(params)?)
+        .get("/v1/user/deposit_history", to_query_params(params)?)
         .await?;
     Ok(resp.deposits)
 }

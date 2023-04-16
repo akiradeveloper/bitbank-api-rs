@@ -17,7 +17,6 @@ async fn main() -> anyhow::Result<()> {
     dbg!(tgt_price, tgt_amount);
 
     let cred = private::Credential::from_env()?;
-    dbg!(&cred);
 
     eprintln!("create order");
     let created = {
