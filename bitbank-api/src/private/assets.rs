@@ -19,7 +19,7 @@ pub enum WithdrawalFee {
 }
 
 #[serde_as]
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct AssetInfo {
     #[serde_as(as = "DisplayFromStr")]
     pub asset: Asset,
