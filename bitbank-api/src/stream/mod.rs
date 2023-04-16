@@ -4,7 +4,7 @@ use tokio_tungstenite::tungstenite::Message;
 
 /// Get depth diff in stream.
 pub mod depth_diff;
-/// Get whole diff in stream.
+/// Get whole depth in stream.
 pub mod depth_whole;
 /// Get tickers in stream.
 pub mod ticker;

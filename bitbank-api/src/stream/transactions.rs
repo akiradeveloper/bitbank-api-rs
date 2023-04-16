@@ -8,8 +8,8 @@ pub struct Params {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Transactions {
-    pub transactions: Vec<Transaction>,
+struct Transactions {
+    transactions: Vec<Transaction>,
 }
 
 pub async fn connect(
