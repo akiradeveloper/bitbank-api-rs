@@ -1,13 +1,13 @@
 use super::*;
 
-pub use crate::public::depth::Order;
-use crate::public::depth::RawOrder;
+pub use crate::public::depth::LimitOrder;
+use crate::public::depth::RawLimitOrder;
 
 #[serde_as]
 #[derive(Deserialize, Debug)]
 struct RawResponse {
-    asks: Vec<RawOrder>,
-    bids: Vec<RawOrder>,
+    asks: Vec<RawLimitOrder>,
+    bids: Vec<RawLimitOrder>,
     #[serde_as(as = "TimestampMilliSeconds")]
     timestamp: NaiveDateTime,
     #[serde_as(as = "DisplayFromStr")]
@@ -21,8 +21,8 @@ pub struct Params {
 
 #[derive(Debug)]
 pub struct DepthWhole {
-    pub asks: Vec<Order>,
-    pub bids: Vec<Order>,
+    pub asks: Vec<LimitOrder>,
+    pub bids: Vec<LimitOrder>,
     pub timestamp: NaiveDateTime,
     pub sequence_id: u64,
 }
@@ -36,8 +36,8 @@ pub async fn connect(
     let room_id = format!("depth_whole_{pair}");
     let raw = do_connect::<RawResponse>(&room_id).await?;
     let st = raw.map(|x| DepthWhole {
-        asks: x.asks.into_iter().map(Order::new).collect(),
-        bids: x.bids.into_iter().map(Order::new).collect(),
+        asks: x.asks.into_iter().map(LimitOrder::new).collect(),
+        bids: x.bids.into_iter().map(LimitOrder::new).collect(),
         timestamp: x.timestamp,
         sequence_id: x.sequenceId,
     });
