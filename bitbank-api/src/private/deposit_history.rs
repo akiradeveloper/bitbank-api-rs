@@ -11,19 +11,19 @@ pub enum Status {
 #[serde_as]
 #[derive(Deserialize)]
 pub struct Deposit {
-    uuid: String,
+    pub uuid: String,
     #[serde_as(as = "DisplayFromStr")]
-    asset: Asset,
-    amount: f64,
+    pub asset: Asset,
+    pub amount: f64,
     /// Exists only for crytos.
-    txid: Option<String>,
+    pub txid: Option<String>,
     #[serde_as(as = "DisplayFromStr")]
-    status: Status,
+    pub status: Status,
     #[serde_as(as = "TimestampMilliSeconds")]
-    found_at: NaiveDateTime,
+    pub found_at: NaiveDateTime,
     /// Exists only for confirmed ones.
     #[serde_as(as = "Option<TimestampMilliSeconds>")]
-    confirmed_at: Option<NaiveDateTime>,
+    pub confirmed_at: Option<NaiveDateTime>,
 }
 
 #[derive(Deserialize)]
