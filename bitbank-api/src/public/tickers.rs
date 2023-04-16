@@ -1,37 +1,26 @@
 use super::*;
 
+pub use super::ticker::Ticker;
+
 #[serde_as]
 #[derive(Deserialize, Debug)]
-pub struct Ticker {
+struct Raw {
     #[serde_as(as = "DisplayFromStr")]
     pub pair: Pair,
-    #[serde_as(deserialize_as = "DefaultOnNull<DisplayFromStr>")]
-    pub sell: f64,
-    #[serde_as(deserialize_as = "DefaultOnNull<DisplayFromStr>")]
-    pub buy: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub high: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub low: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub open: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub last: f64,
-    #[serde_as(as = "DisplayFromStr")]
-    pub vol: f64,
-    #[serde_as(as = "TimestampMilliSeconds")]
-    pub timestamp: NaiveDateTime,
+    #[serde(flatten)]
+    pub inner: crate::public::ticker::Ticker,
 }
 
 #[derive(Deserialize, Debug)]
-struct Response(Vec<Ticker>);
+struct Response(Vec<Raw>);
 
 #[derive(TypedBuilder)]
 pub struct Params {}
 
-pub async fn get(_: Params) -> anyhow::Result<Vec<Ticker>> {
+pub async fn get(_: Params) -> anyhow::Result<Vec<(Pair, Ticker)>> {
     let resp: Response = do_get("/tickers".to_owned()).await?;
-    Ok(resp.0)
+    let out = resp.0.into_iter().map(|x| (x.pair, x.inner)).collect();
+    Ok(out)
 }
 
 #[cfg(test)]
