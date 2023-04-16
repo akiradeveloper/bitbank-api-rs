@@ -89,7 +89,7 @@ async fn main() -> anyhow::Result<()> {
             .pair(XRP_JPY)
             .order_ids(order_ids.clone())
             .build();
-        post(cred.clone(), params).await?
+        get(cred.clone(), params).await?
     };
     dbg!(&resp);
 
