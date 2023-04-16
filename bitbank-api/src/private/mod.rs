@@ -1,15 +1,24 @@
 use super::*;
 use reqwest::Client;
 
+/// Get asset list.
 pub mod assets;
 mod auth;
+/// Cancel an order.
 pub mod cancel_order;
+/// Cancel multiple orders.
 pub mod cancel_orders;
+/// Create an order.
 pub mod create_order;
+/// Get deposit history.
 pub mod deposit_history;
+/// Get active orders.
 pub mod fetch_active_orders;
+/// Get an order information.
 pub mod fetch_order;
+/// Get multiple orders.
 pub mod fetch_orders;
+/// Get trade history.
 pub mod trade_history;
 
 pub use auth::Credential;
