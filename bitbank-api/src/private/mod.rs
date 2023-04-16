@@ -1,6 +1,7 @@
 use super::*;
 use reqwest::Client;
 
+pub mod assets;
 mod auth;
 pub mod cancel_order;
 pub mod cancel_orders;
