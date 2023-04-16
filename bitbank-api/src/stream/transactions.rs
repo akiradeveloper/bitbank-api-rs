@@ -14,10 +14,13 @@ pub struct Transactions {
 
 pub async fn connect(
     params: Params,
-) -> anyhow::Result<impl tokio_stream::Stream<Item = Transactions>> {
+) -> anyhow::Result<impl tokio_stream::Stream<Item = Transaction>> {
+    use futures::stream::{self, StreamExt};
     let pair = params.pair;
     let room_id = format!("transactions_{pair}");
-    do_connect(&room_id).await
+    let st = do_connect::<Transactions>(&room_id).await?;
+    let st = st.flat_map(|x| stream::iter(x.transactions));
+    Ok(st)
 }
 
 #[cfg(test)]
