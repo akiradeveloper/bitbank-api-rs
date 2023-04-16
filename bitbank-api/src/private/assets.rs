@@ -30,7 +30,6 @@ pub struct AssetInfo {
     pub onhand_amount: f64,
     #[serde_as(as = "DisplayFromStr")]
     pub locked_amount: f64,
-    #[serde_as(as = "DisplayFromStr")]
     pub withdrawal_fee: WithdrawalFee,
     pub stop_deposit: bool,
     pub stop_withdrawal: bool,
