@@ -1,11 +1,18 @@
 use super::*;
 
+/// Get candlestick information.
 pub mod candlestick;
+/// Get depth information.
 pub mod depth;
+/// Get exhange status.
 pub mod exchange_status;
+/// Get all pairs information.
 pub mod pairs;
+/// Get ticker information.
 pub mod ticker;
+/// Get all tickers information.
 pub mod tickers;
+/// Get executed transactions.
 pub mod transactions;
 
 async fn do_get<R: serde::de::DeserializeOwned>(path: String) -> anyhow::Result<R> {

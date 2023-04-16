@@ -2,9 +2,13 @@ use super::*;
 use std::{cell::RefCell, rc::Rc};
 use tokio_tungstenite::tungstenite::Message;
 
+/// Get depth diff in stream.
 pub mod depth_diff;
+/// Get whole diff in stream.
 pub mod depth_whole;
+/// Get tickers in stream.
 pub mod ticker;
+/// Get transactions in stream.
 pub mod transactions;
 
 enum ParsedMessage<R: serde::de::DeserializeOwned> {
