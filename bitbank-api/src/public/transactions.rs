@@ -20,7 +20,7 @@ pub struct Transaction {
 }
 
 #[derive(derive_more::Display)]
-#[display(fmt = "{_0}{_1}{_2}")]
+#[display("{_0}{_1}{_2}")]
 pub struct Date(u16, u8, u8);
 
 #[derive(TypedBuilder)]

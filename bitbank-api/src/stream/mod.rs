@@ -70,7 +70,7 @@ async fn do_connect<R: serde::de::DeserializeOwned>(
     writer.send(Message::text("40")).await?;
 
     let msg = format!("42[\"join-room\", \"{room_id}\"]");
-    writer.send(Message::Text(msg)).await?;
+    writer.send(Message::Text(msg.into())).await?;
 
     let rc_writer = Rc::new(RefCell::new(writer));
     let st = reader.filter_map(move |msg| {
