@@ -7,7 +7,12 @@ pub struct Params {}
 #[derive(strum::EnumString, Deserialize, Debug)]
 #[serde(untagged)]
 pub enum WithdrawalFee {
-    Crypto(#[serde_as(as = "DisplayFromStr")] f64),
+    Crypto {
+        #[serde_as(as = "DisplayFromStr")]
+        min: f64,
+        #[serde_as(as = "DisplayFromStr")]
+        max: f64,
+    },
     Fiat {
         #[serde_as(as = "DisplayFromStr")]
         under: f64,
