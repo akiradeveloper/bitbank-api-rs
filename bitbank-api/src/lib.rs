@@ -1,3 +1,5 @@
+#[cfg(test)]
+use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_urlencoded::to_string as to_query_params;
 use serde_with::chrono::NaiveDateTime;

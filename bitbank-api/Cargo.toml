@@ -15,6 +15,7 @@ keywords = ["bitbank", "crypto", "trading"]
 [dependencies]
 anyhow = "1"
 derive_more = "0.99"
+dotenv.workspace = true
 futures = { version = "0.3", default-features = false }
 futures-util = { version = "0.3", default-features = false }
 hex = "0.4.3"

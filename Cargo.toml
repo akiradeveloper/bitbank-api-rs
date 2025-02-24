@@ -3,3 +3,6 @@ members = [
   "bitbank-api",
   "examples",
 ]
+
+[workspace.dependencies]
+dotenv = "0.15"

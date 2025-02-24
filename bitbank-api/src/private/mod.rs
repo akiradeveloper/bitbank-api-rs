@@ -20,6 +20,8 @@ pub mod fetch_order;
 pub mod fetch_orders;
 /// Get trade history.
 pub mod trade_history;
+/// Get withdrawal history.
+pub mod withdrawal_history;
 
 pub use auth::Credential;
 
