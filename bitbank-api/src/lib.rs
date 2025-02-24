@@ -44,9 +44,9 @@ impl std::str::FromStr for Pair {
 #[derive(strum::EnumString, strum::Display, Debug, Clone)]
 #[strum(serialize_all = "snake_case")]
 pub enum Asset {
-    XRP,
     JPY,
     BTC,
+    XRP,
     LTC,
     ETH,
     MONA,
@@ -73,6 +73,21 @@ pub enum Asset {
     APE,
     CHZ,
     OAS,
+    MANA,
+    GRT,
+    RNDR,
+    BNB,
+    DAI,
+    OP,
+    ARB,
+    KLAY,
+    IMX,
+    MASK,
+    POL,
+    SOL,
+    CYBER,
+    RENDER,
+    TRX,
 }
 #[cfg(test)]
 pub use Asset::*;
