@@ -10,6 +10,7 @@ publish = false
 bitbank-api = { path = "../bitbank-api" }
 
 anyhow = "1"
+dotenv.workspace = true
 futures-util = "0.3"
 tokio = { version = "1", features = ["full"] }
 
