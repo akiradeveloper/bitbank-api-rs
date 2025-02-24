@@ -68,4 +68,15 @@ mod tests {
         assert_eq!(to_query_params(params)?, "asset=xrp&count=100&since=10000");
         Ok(())
     }
+
+    #[ignore]
+    #[tokio::test]
+    async fn test_get() {
+        dotenv().ok();
+        let cred = Credential::from_env().unwrap();
+        let resp = get(cred, Params::builder().asset(XRP).count(10).build())
+            .await
+            .unwrap();
+        dbg!(resp);
+    }
 }
