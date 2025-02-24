@@ -71,4 +71,13 @@ mod tests {
 
         Ok(())
     }
+
+    #[ignore]
+    #[tokio::test]
+    async fn test_get() {
+        dotenv().ok();
+        let cred = Credential::from_env().unwrap();
+        let resp = get(cred, Params::builder().build()).await.unwrap();
+        dbg!(&resp);
+    }
 }
