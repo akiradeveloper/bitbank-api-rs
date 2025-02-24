@@ -59,7 +59,10 @@ mod tests {
     #[test]
     fn test_withdrawal_deser() -> anyhow::Result<()> {
         let s = r#"
-		"100.0"
+        {
+            "min": "1.0",
+            "max": "3.0"
+        }
 		"#;
         let x: WithdrawalFee = serde_json::from_str(&s)?;
         dbg!(&x);

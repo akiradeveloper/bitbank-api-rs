@@ -20,7 +20,7 @@ use serde_with::{serde_as, DisplayFromStr};
 /// - 0: base asset
 /// - 1: quote asset
 #[derive(derive_more::Display, Debug, Clone)]
-#[display(fmt = "{_0}_{_1}")]
+#[display("{_0}_{_1}")]
 pub struct Pair(pub Asset, pub Asset);
 
 impl std::str::FromStr for Pair {

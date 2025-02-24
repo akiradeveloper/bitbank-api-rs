@@ -56,36 +56,36 @@ impl Candlestick {
 
 #[derive(derive_more::Display, Debug, Clone)]
 pub enum CandleType {
-    #[display(fmt = "1min")]
+    #[display("1min")]
     Min1,
-    #[display(fmt = "5min")]
+    #[display("5min")]
     Min5,
-    #[display(fmt = "15min")]
+    #[display("15min")]
     Min15,
-    #[display(fmt = "30min")]
+    #[display("30min")]
     Min30,
-    #[display(fmt = "1hour")]
+    #[display("1hour")]
     Hour1,
 
-    #[display(fmt = "4hour")]
+    #[display("4hour")]
     Hour4,
-    #[display(fmt = "8hour")]
+    #[display("8hour")]
     Hour8,
-    #[display(fmt = "12hour")]
+    #[display("12hour")]
     Hour12,
-    #[display(fmt = "1day")]
+    #[display("1day")]
     Day1,
-    #[display(fmt = "1week")]
+    #[display("1week")]
     Week1,
-    #[display(fmt = "1month")]
+    #[display("1month")]
     Month1,
 }
 
 #[derive(derive_more::Display, Clone)]
 pub enum Period {
-    #[display(fmt = "{_0}")]
+    #[display("{_0}")]
     YYYY(u16),
-    #[display(fmt = "{_0}{_1}{_2}")]
+    #[display("{_0}{_1}{_2}")]
     YYYYMMDD(u16, u8, u8),
 }
 
