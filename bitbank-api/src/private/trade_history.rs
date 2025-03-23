@@ -34,8 +34,9 @@ pub struct Trade {
 #[serde_as]
 #[derive(TypedBuilder, Serialize, Debug)]
 pub struct Params {
-    #[serde_as(as = "DisplayFromStr")]
-    pair: Pair,
+    #[builder(default, setter(strip_option))]
+    #[serde_as(as = "Option<DisplayFromStr>")]
+    pair: Option<Pair>,
     #[builder(default, setter(strip_option))]
     count: Option<u16>,
     #[builder(default, setter(strip_option))]
