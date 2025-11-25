@@ -40,8 +40,9 @@ struct Response {
 #[serde_as]
 #[derive(TypedBuilder, Serialize, Debug)]
 pub struct Params {
-    #[serde_as(as = "DisplayFromStr")]
-    asset: Asset,
+    #[builder(default, setter(strip_option))]
+    #[serde_as(as = "Option<DisplayFromStr>")]
+    asset: Option<Asset>,
     #[builder(default, setter(strip_option))]
     count: Option<u8>,
     #[builder(default, setter(strip_option))]
