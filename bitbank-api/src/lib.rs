@@ -88,6 +88,8 @@ pub enum Asset {
     CYBER,
     RENDER,
     TRX,
+    #[strum(default)]
+    Unknown(String),
 }
 #[cfg(test)]
 pub use Asset::*;
@@ -164,4 +166,17 @@ struct ApiError {
 #[derive(Deserialize, Debug)]
 struct ResponseError {
     code: u16,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_unknown_asset() {
+        let a = Asset::XRP;
+        let b: Asset = "abc".parse().unwrap();
+        let p = Pair(a, b);
+        assert_eq!(p.to_string(), "xrp_abc");
+    }
 }
